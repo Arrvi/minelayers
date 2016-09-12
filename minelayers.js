@@ -7,11 +7,15 @@ app.controller('MineLayersController', function MineLayersController($scope) {
   $scope.canExplodeOthers = true;
   $scope.numberOfPlayers = 2;
   $scope.currentPlayer = 0;
-  $scope.players = [
+  let players = [
     new Player('red', 'Red'),
     new Player('blue', 'Blue'),
     new Player('green', 'Green')
   ];
+  $scope.players = [];
+  for (let i = 0; i < $scope.numberOfPlayers; i++) {
+    $scope.players.push(players[i]);
+  }
   $scope.player = function player() {
     return $scope.players[$scope.currentPlayer]
   };
@@ -43,7 +47,8 @@ app.controller('MineLayersController', function MineLayersController($scope) {
     if ( field.land ) {
       field.makeMine($scope.player());
     } else if ( field.mine ) {
-      field.trigger();
+      let points = field.trigger();
+      $scope.player().score(points);
     }
     nextPlayer();
   }

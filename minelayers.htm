@@ -26,6 +26,18 @@
                     <h2>
                         Current player: <span class="label {{player().color}}">{{player().name}}</span>
                     </h2>
+                    <table id="players" class="table">
+                        <tr>
+                            <th>Name</th>
+                            <th>Fields</th>
+                            <th>Points</th>
+                        </tr>
+                        <tr ng-repeat="player in players">
+                            <td><span class="label {{player.color}}">{{player.name}}</span></td>
+                            <td>{{player.fields}}</td>
+                            <td>{{player.points}}</td>
+                        </tr>
+                    </table>
                     <div class="clearfix"></div>
                 </div>
             </div>

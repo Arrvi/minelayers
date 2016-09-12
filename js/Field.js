@@ -23,16 +23,20 @@ class Field {
 	}
 
 	makeLand() {
+		if (this.field) return;
 		this.type = FIELD_LAND;
 		this.owner = null;
 	}
 	makeMine(owner) {
+		if (this.mine) return;
 		this.type = FIELD_MINE;
 		this.owner = owner;
+		this.owner.addField(this);
 	}
 
 	trigger() {
-		if (!this.mine) return;
+		if (!this.mine) return 0;
+		this.owner.removeField(this);
 		this.makeLand();
 		let points = this.neighbours.reduce(function(sum, elem){
 			return sum + elem.trigger();
