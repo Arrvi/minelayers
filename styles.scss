@@ -1,6 +1,14 @@
-$players: red blue green yellow magenta cyan;
+$players: (
+  'red':#a22, 
+  'blue':#44c,
+  'green':#222,
+  'yellow':#222,
+  'magenta':#222,
+  'cyan':#222
+  );
 
 #board {
+  margin: .8em;
   float: left;
 }
 
@@ -26,11 +34,21 @@ $players: red blue green yellow magenta cyan;
   }
 }
 
-@each $player in $players {
+@each $player, $color in $players {
   .cannot-explode-others.#{$player} {
     .field.mine:not(.#{$player}):hover {
       cursor: not-allowed;
       opacity: 1;
     }
   }
+
+  .label.#{$player} {
+    background: #{$color};
+  }
+}
+
+.clearfix {
+  width: 0;
+  height: 0;
+  clear: both;
 }
