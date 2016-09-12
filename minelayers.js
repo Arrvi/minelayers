@@ -5,10 +5,12 @@ app.controller('MineLayersController', function MineLayersController($scope) {
     height: 10
   };
   $scope.canExplodeOthers = true;
+  $scope.numberOfPlayers = 2;
   $scope.currentPlayer = 0;
   $scope.players = [
-    'red',
-    'blue'
+    new Player('red', 'Red'),
+    new Player('blue', 'Blue'),
+    new Player('green', 'Green')
   ];
   $scope.player = function player() {
     return $scope.players[$scope.currentPlayer]
@@ -21,44 +23,34 @@ app.controller('MineLayersController', function MineLayersController($scope) {
     for (let y = 0; y < config.height; y++) {
       board[y] = [];
       for (let x = 0; x < config.width; x++) {
-        board[y][x] = {
-          type: 'land',
-          x: x,
-          y: y
-        };
+        board[y][x] = new Field(x, y);
       }
     }
-
+    for (let y = 0; y < config.height; y++) {
+      for (let x = 0; x < config.width; x++) {
+        let up, right, down, left;
+        if ( y > 0 ) up = board[y-1][x];
+        if ( x < config.width-1) right = board[y][x+1];
+        if ( y < config.height-1 ) down = board[y+1][x];
+        if ( x > 0 ) left = board[y][x-1];
+        board[y][x].setNeighbours(up, right, down, left);
+      }
+    }
     return board;
   }
 
-  $scope.setMine = function(field) {
-    if (field.type == 'land') {
-      field.type = 'mine';
-      field.owner = $scope.player();
-    } else if (field.type == 'mine')
-      explode(field);
+  $scope.trigger = function(field) {
+    if ( field.land ) {
+      field.makeMine($scope.player());
+    } else if ( field.mine ) {
+      field.trigger();
+    }
     nextPlayer();
-  }
-
-  function explode(field) {
-    if (field.type != 'mine') return;
-    var neighbours = [
-      [field.x - 1, field.y],
-      [field.x, field.y - 1],
-      [field.x + 1, field.y],
-      [field.x, field.y + 1]
-    ];
-    field.type = 'land';
-    neighbours.forEach(function(elem) {
-      if (elem[0] < 0 || elem[0] >= $scope.boardConfig.width || elem[1] < 0 || elem[1] >= $scope.boardConfig.height)
-        return;
-      explode($scope.board[elem[1]][elem[0]]);
-    });
   }
 
   function nextPlayer() {
     $scope.currentPlayer++;
-    $scope.currentPlayer %= $scope.players.length;
+    $scope.currentPlayer %= $scope.numberOfPlayers;
   }
+
 });

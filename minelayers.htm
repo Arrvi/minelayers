@@ -5,6 +5,8 @@
     <title>Minelayer minigame concept</title>
     <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles.css" type="text/css">
+    <script type="text/javascript" src="js/Player.js"></script>
+    <script type="text/javascript" src="js/Field.js"></script>
     <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular.js"></script>
     <script type="text/javascript" src="minelayers.js"></script>
 </head>
@@ -14,15 +16,15 @@
         <div class="panel panel-default">
             <div class="panel-content">
                 <div ng-controller="MineLayersController">
-                    <table id="board" class="{{player()}} {{canExplodeOthers && 'can-expolde-others' || 'cannot-explode-others'}}">
+                    <table id="board" class="{{player().color}} {{canExplodeOthers &amp;&amp; 'can-expolde-others' || 'cannot-explode-others'}}">
                         <tr ng-repeat="row in board">
                             <td ng-repeat="field in row">
-                                <div class="field {{field.type}} {{field.owner}}" ng-click="setMine(field)"></div>
+                                <div class="field {{field.type}} {{field.owner.color}}" ng-click="trigger(field)"></div>
                             </td>
                         </tr>
                     </table>
                     <h2>
-                        Current player: <span class="label {{player()}}">{{player()}}</span>
+                        Current player: <span class="label {{player().color}}">{{player().name}}</span>
                     </h2>
                     <div class="clearfix"></div>
                 </div>
