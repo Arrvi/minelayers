@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Minelayer minigame concept</title>
+    <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.scss" type="text/sass">
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular.js"></script>
+    <script type="text/javascript" src="minelayers.js"></script>
+</head>
+<body ng-app="minelayers">
+    <div ng-controller="MineLayersController">
+        <table id="board" class="{{player()}} {{canExplodeOthers && 'can-expolde-others' || 'cannot-explode-others'}}">
+            <tr ng-repeat="row in board">
+                <td ng-repeat="field in row">
+                    <div class="field {{field.type}} {{field.owner}}" ng-click="setMine(field)"></div>
+                </td>
+            </tr>
+        </table>
+        <p>
+            Current player: {{player()}}
+        </p>
+    </div>
+</body>
+</html>
